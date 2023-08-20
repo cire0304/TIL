@@ -19,6 +19,7 @@
   - [TLAB (Thread Local Allocation Buffer)](#tlab-thread-local-allocation-buffer)
   - [Card Table](#card-table)
   - [PLAB(Parallel Location Allocation Buffer) - 공부 더 필요](#plabparallel-location-allocation-buffer---공부-더-필요)
+- [The JVM Write Barrier - Card Marking](#the-jvm-write-barrier---card-marking)
 
 
 ---
@@ -62,6 +63,8 @@ GC를 실행하기 위해 JVM이 어플리케이션 실행을 멈추는 것이�
 > 객체의 상태를 빠르게 반영하지 못하는게 왜 문제일까?
 > 
 > 어플리케이션 스레드를 멈추지 않고 Marking을 하게된다면, 스레드가 하는 일에 따라 Marking은 영원히 끝나지 않을 수 있다. (객체간의 참조는 계속 변할 수 있으므로)
+>
+> 또한, reachalbe한 객체이지만, Mark and Sweap 단계에 marking 되지 못하여 버그가 발생할 수 있다.
 
 ### Mark and Sweep
 
@@ -146,6 +149,10 @@ Old 영역에 대해서 Compaction을 수행하지 않고 객체를 할당할 �
 
 Mark와 Sweep과정을 특정 단계 빼고는 어플리케이션 스레드와 병렬적으로 수행한다.
 
+> 궁금한 점
+>
+> CMS GC의 마지막 단계, Concurrent Sweep 도중에 새로운 객체를 만들거나 객체 그래프가 변경됬을 때, reachable 객체이지만 marking이 되지 않아서 Sweep의 대상이 될 수 있지 않나?
+
 
 ## G1 GC
 
@@ -228,3 +235,16 @@ PLAB는 각 GC 스레드가 받는 Old 영역의 객체 할당 공간이다. 각
 > https://dhsim86.github.io/java/2018/02/04/what_is_garbage_collection-post.html
 > https://dhsim86.github.io/java/2018/02/05/gc_algorithms-post.html
 
+# The JVM Write Barrier - Card Marking
+
+참조 필드에 객체가 저장된 메모리 주소를 저장함으로써, 개발자는 객체를 참조할 수 있다.
+
+이론적으로 참조 필드를 작성하는 것은 동일한 크기의 원시 값을 작성하는 것과 같지만, 실제로는 GC를 지원하기 위해 일부 계산이 이루어진다.  
+
+![](http://4.bp.blogspot.com/-234QMVmLhAA/VE-l8dKd1xI/AAAAAAAAAeg/O8rn2W8mleU/s1600/cardmarking.png)
+
+위의 Dirty Cards에 dirty 체크하는 것이 Card Marking이다.
+
+
+> 출처
+> http://psy-lob-saw.blogspot.com/2014/10/the-jvm-write-barrier-card-marking.html
