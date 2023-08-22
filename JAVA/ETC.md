@@ -86,12 +86,12 @@ JVM의 메모리에서만 상주되어 있는 객체 데이터르 그대로 영�
 > 3. 자주 변경되는 비즈니스적인 데이터를 자바 직렬화을 사용하지 않습니다.
 > 4. 긴 만료 시간을 가지는 데이터는 JSON 등 다른 포맷을 사용하여 저장합니다.
 
-> 출처
+> 출처  
 > 이펙티브자바
 > [우아한 기술 블로그](https://techblog.woowahan.com/2550/)
 > [오라클 공식 문서](https://docs.oracle.com/javase/6/docs/platform/serialization/spec/class.html#4100)
 
----
+
 
 # 제너릭
 
@@ -174,11 +174,11 @@ List<T> list;
 ## capture (공부 필요)
 
 
-> 출처
+> 출처  
 > [토비의 봄 (제너릭)](https://www.youtube.com/watch?v=ipT2XG1SHtQ&list=PLv-xDnFD-nnmof-yoZQN8Fs2kVljIuFyC&index=12&ab_channel=%ED%86%A0%EB%B9%84%EC%9D%98%EC%8A%A4%ED%94%84%EB%A7%81)
 > https://vvshinevv.tistory.com/54
 
----
+
 
 # String Constant Poll vs Constant Pool
 
@@ -210,7 +210,7 @@ GC의 대상은 Heap 영역이라고 배웠다. 그리고 String Constant Pool�
 -> 동적으로 생성된 String 객체는 Heap 영역에 저장된다.
 
 
-> 출처
+> 출처  
 > https://deveric.tistory.com/123
 > https://stackoverflow.com/questions/18406703/when-will-a-string-be-garbage-collected-in-java
 	 
@@ -222,6 +222,8 @@ Java7에서 Java로 넘어올 때, Perm 영역이 Metaspace 영역으로 이관�
 이관된 주요 이유는 Class, Metadata 로딩 과정에서 메모리 릭이 발생하였고, perm 영역의 크기를 고정적으로 설정해야 했기 때문에 메모리 부족으로 OOM이 발생하였다.  
 
 위의 문제를 Perm 영역을 JVM의 `Native Memory`를 사용한 Metaspace영역으로 이관하여 해결하였다.
+
+Native Memory는 런타임 시점에 동적으로 메모리 할당이 가능하다.
 
 ![](https://miro.medium.com/v2/resize:fit:513/0*rKZvTnuUkEc5LoXW.jpg)
 

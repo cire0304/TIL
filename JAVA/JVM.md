@@ -229,7 +229,7 @@ JVM은 Minor GC 수행시 Card Table의 Dirty Card만 검색한다면, Old 영�
 PLAB는 각 GC 스레드가 받는 Old 영역의 객체 할당 공간이다. 각 GC 스레드는 이를 통해 스레드 경합하지 않고 바로 Old 영역에 객체를 이동시킬 수 있다.
 
 
-> 출처
+> 출처  
 > https://d2.naver.com/helloworld/1329
 > https://mangkyu.tistory.com/119
 > https://dhsim86.github.io/java/2018/02/04/what_is_garbage_collection-post.html
@@ -246,5 +246,5 @@ PLAB는 각 GC 스레드가 받는 Old 영역의 객체 할당 공간이다. 각
 위의 Dirty Cards에 dirty 체크하는 것이 Card Marking이다.
 
 
-> 출처
+> 출처  
 > http://psy-lob-saw.blogspot.com/2014/10/the-jvm-write-barrier-card-marking.html
