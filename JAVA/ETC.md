@@ -14,7 +14,8 @@
   - [Bounded Type parameter](#bounded-type-parameter)
   - [제너릭 vs 와일드 카드](#제너릭-vs-와일드-카드)
   - [제너릭의 상속에서 주의할 점](#제너릭의-상속에서-주의할-점)
-- [capture (공부 필요)](#capture-공부-필요)
+  - [capture (공부 필요)](#capture-공부-필요)
+- [String Constant Poll vs Constant Pool](#string-constant-poll-vs-constant-pool)
 - [클래스 패스](#클래스-패스)
 
 # 자바 직렬화
@@ -166,7 +167,7 @@ List<T> list;
 
 제너릭은 클래스간 상속에 영향을 주지 않는다.
 
-# capture (공부 필요)
+## capture (공부 필요)
 
 
 > 출처
@@ -175,6 +176,27 @@ List<T> list;
 
 ---
 
+# String Constant Poll vs Constant Pool
+
+String Constant Poll과 Constant Poll은 이름이 비슷하다.
+하지만 위의 두 용어는 완전히 다른 용어이다.
+
+저장되는 위치, 저장하는 데이터의 종류, 관리 주체까지 모든 것이 다른 저장공간이다.
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FeaJffC%2FbtsgwMqYWOP%2FlWjjsBoXdDoUMWgrSr5ZCK%2Fimg.png)
+
+
+|| String Constant Pool | Constant Pool inside a Java class file |	Runtime Constant pool |
+|:-:|:-:|:-:|:-:|
+|역할|	String 객체의 상수 값을 저장(캐싱)|클래스 파일의 상수 값을 저장|Class Constant pool에서 읽어온 상수 값, 클래스 메타데이터 저장|
+|저장되는 값 | String 상수 값 <br> ex) "Hello", "World" | 클래스 파일에 포함된 상수 값 <br> ex) 123, 3.14, true | 클래스 파일에 포함된 상수 값. Class Constant pool에 저장되어있던 값이 런타임시 이 영역으로 저장된다. |
+| 저장 위치 | Java 7 이전 - Perm <br> Java 8 이상 - Metaspace| Class file | 		Java 7 이전 - Perm <br> Java 8 이상 - Metaspace |
+|저장 트리거| String.intern(), String을 리터럴로 생성 | 컴파일시 생성됨 | 클래스파일에 코드 레벨로 선언된 상수풀이 런타임시 로더의 판단에 의해 올라옴. |
+|불변 여부|불변 여부	불변 (Immutable)|Class 파일 자체는 불변.|Runtime시 동적 로드에 의해 변경될 수 있음	불변이 아님.클래스파일이 동적으로 로딩되고 초기화되기 때문에, 로드될 때 마다 변경됨|
+
+> 출처
+> https://deveric.tistory.com/123
+	 
 # 클래스 패스
 
 클래스 패스는 JMV이 프로그램을 실행할 때, 클래스를 찾기 위한 기준이 되는 경로이다.
