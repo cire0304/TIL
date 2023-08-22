@@ -16,6 +16,10 @@
   - [제너릭의 상속에서 주의할 점](#제너릭의-상속에서-주의할-점)
   - [capture (공부 필요)](#capture-공부-필요)
 - [String Constant Poll vs Constant Pool](#string-constant-poll-vs-constant-pool)
+  - [String Constant Pool은 GC의 대상이 될까?](#string-constant-pool은-gc의-대상이-될까)
+- [Metaspace](#metaspace)
+  - [Native Memory](#native-memory)
+  - [Java Heap Shrinkage (공부 필요)](#java-heap-shrinkage-공부-필요)
 - [클래스 패스](#클래스-패스)
 
 # 자바 직렬화
@@ -194,9 +198,46 @@ String Constant Poll과 Constant Poll은 이름이 비슷하다.
 |저장 트리거| String.intern(), String을 리터럴로 생성 | 컴파일시 생성됨 | 클래스파일에 코드 레벨로 선언된 상수풀이 런타임시 로더의 판단에 의해 올라옴. |
 |불변 여부|불변 여부	불변 (Immutable)|Class 파일 자체는 불변.|Runtime시 동적 로드에 의해 변경될 수 있음	불변이 아님.클래스파일이 동적으로 로딩되고 초기화되기 때문에, 로드될 때 마다 변경됨|
 
+## String Constant Pool은 GC의 대상이 될까?
+
+GC의 대상은 Heap 영역이라고 배웠다. 그리고 String Constant Pool이 저장되는 곳은 Metaspace(Java8 이상) 이라고 한다.
+
+그렇다면 String Constant Pool에 저장되 있는 데이터는 GC의 대상이 되지 않는 걸까?
+
+정답은 그렇다. String Constant Pool에 저장되어 있는 String literals은 GC의 대상이 되지 않는다.
+
+다만 여기서 확실히 알아야 할 점은, 모든 String 객체가 String Constant Pool에 저장되는 것이 아니라는 점이다.
+-> 동적으로 생성된 String 객체는 Heap 영역에 저장된다.
+
+
 > 출처
 > https://deveric.tistory.com/123
+> https://stackoverflow.com/questions/18406703/when-will-a-string-be-garbage-collected-in-java
 	 
+---
+
+# Metaspace
+
+Java7에서 Java로 넘어올 때, Perm 영역이 Metaspace 영역으로 이관되었다.
+이관된 주요 이유는 Class, Metadata 로딩 과정에서 메모리 릭이 발생하였고, perm 영역의 크기를 고정적으로 설정해야 했기 때문에 메모리 부족으로 OOM이 발생하였다.  
+
+위의 문제를 Perm 영역을 JVM의 `Native Memory`를 사용한 Metaspace영역으로 이관하여 해결하였다.
+
+![](https://miro.medium.com/v2/resize:fit:513/0*rKZvTnuUkEc5LoXW.jpg)
+
+## Native Memory
+
+Native Memory는 Heap 영역의 바깥인 Off-Heap 공간을 의미하는 것으로 쉽게 시스템의 기본 메모리라고 생각하면 된다.
+
+> 출처
+> [삼성SDS 기술 블로그](https://m.post.naver.com/viewer/postView.nhn?volumeNo=23726161&memberNo=36733075)
+> https://deveric.tistory.com/123
+
+
+## Java Heap Shrinkage (공부 필요)
+
+
+
 # 클래스 패스
 
 클래스 패스는 JMV이 프로그램을 실행할 때, 클래스를 찾기 위한 기준이 되는 경로이다.
