@@ -20,6 +20,11 @@
 - [Metaspace](#metaspace)
   - [Native Memory](#native-memory)
   - [Java Heap Shrinkage (공부 필요)](#java-heap-shrinkage-공부-필요)
+- [예외와 에러](#예외와-에러)
+  - [예외 처리](#예외-처리)
+- [static 메서드가 Override 되지 않는 이유](#static-메서드가-override-되지-않는-이유)
+  - [Static Binding과 Dynamic Binding](#static-binding과-dynamic-binding)
+    - [Static Binding을 하는 이유](#static-binding을-하는-이유)
 - [클래스 패스](#클래스-패스)
 
 # 자바 직렬화
@@ -231,14 +236,62 @@ Native Memory는 런타임 시점에 동적으로 메모리 할당이 가능하�
 
 Native Memory는 Heap 영역의 바깥인 Off-Heap 공간을 의미하는 것으로 쉽게 시스템의 기본 메모리라고 생각하면 된다.
 
-> 출처
-> [삼성SDS 기술 블로그](https://m.post.naver.com/viewer/postView.nhn?volumeNo=23726161&memberNo=36733075)
+> 출처  
+> [삼성SDS 기술 블로그](https://m.post.naver.com/viewer/postView.nhn?volumeNo=23726161&memberNo=36733075)  
 > https://deveric.tistory.com/123
 
 
 ## Java Heap Shrinkage (공부 필요)
 
 
+# 예외와 에러
+
+`예외`란 입력 값에 대한 처리가 불가능하거나, 프로그램 실행 중에 참조된 값이 잘못된 경우 등 정상적인 프로그램의 흐름이 어긋나는 것을 말한다.
+
+`에러`는 시스템에 무엇인가 비정상적인 상황이 발생한 경우에 발생한다. 주로 자바 가상머신에서 발생시키는 것이며, 예외와 반대로 애플리케이션 코드에서 잡으려고 하면 안 된다.
+
+## 예외 처리
+
+예외를 처리하는 방법에는 다음과 같은 방식이 존재한다.
+- 예외 복구 : 예외 상황을 파악하고, 문제를 해결해서 정상 상태로 돌려놓는 방법
+- 예외 처리 회피 : 예외 처리를 직접 담당하지 않고 호출한 쪽으로 던져 회피하는 방법
+- 예외 전환 : 예외 회피와 비슷하게 메서드 밖으로 예외를 던지지만, 그냥 던지지 않고 적절한 예외로 전환해서 넘기는 방법
+
+![](https://user-images.githubusercontent.com/45676906/105691109-2cda9400-5f40-11eb-9003-a14873c2eaf2.png)
+
+> 출처  
+> 자바의 신  
+> https://madplay.github.io/post/java-checked-unchecked-exceptions
+
+# static 메서드가 Override 되지 않는 이유
+
+Super class에 정의된 static 메서드는 Sub class 에서 Override될 수 없다.
+
+Override될 수 없는 이유를 알기위해서는 먼저 Override가 어떻게 되는 지를 알아야 할 것 같다.
+
+## Static Binding과 Dynamic Binding
+
+Binding은 메서드의 호출 부분을 메서드의 정의 부분에 연결시켜 주는 것을 말한다.
+
+Binding에는 static biding과 dynamic binding이 있다.
+
+1. static Binding 
+   - `컴파일 시점`에 객체의 타입이 결정되는 것을 static binding이라고 한다.
+   - 컴파일러가 메서드의 이름에 메서드의 최종 구현을 맵핑해주는 것을 의미한다.
+   - private, fianl, static method일 때 static binding을 한다.
+2. Dynamic Binding
+   - `런타임 시점`에 타입이 결정되는 것을 Dynamic Binding이라고 한다.
+
+![](https://techvidvan.com/tutorials/wp-content/uploads/sites/2/2020/04/java-static-vs-dynamic-binding.jpg)
+
+### Static Binding을 하는 이유
+
+static binding은 compile-time에 실행된다.  따라서 런타임 시점에 method binding을 할 필요가 없기 때문에, 빠르게 실행될 수 있다.
+
+> 출처  
+> https://techvidvan.com/tutorials/static-and-dynamic-binding-in-java-differences-and-examples/  
+> https://www.javatpoint.com/static-binding-and-dynamic-binding  
+> https://www.codingninjas.com/studio/library/overloading-and-overriding-static-methods-in-java
 
 # 클래스 패스
 
